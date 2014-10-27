@@ -1,0 +1,4 @@
+examples/*
+!examples/guiproject
+examples/guiproject/*.user
+.DS_Store
