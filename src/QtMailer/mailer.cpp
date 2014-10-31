@@ -133,7 +133,7 @@ bool Mailer::connectToServer()
         case SSL :
                     socket->connectToHostEncrypted(server, smtpPort);
                     if (!socket->waitForEncrypted(smtpTimeout)){
-                        emit errorSendingMails(0, ERROR_ENCCONNECTIONNOTPOSSIBLE);
+                        emit errorSendingMails(1, ERROR_ENCCONNECTIONNOTPOSSIBLE);
                         return false;
                     }
                     break;
@@ -162,6 +162,7 @@ void Mailer::disconnectFromServer()
     mailsToSend     =   0;
     recepientsSent  =   0;
     loginState      =   PRELOGIN;
+    startTLSstate   =   preSTARTTLS;
     emit finishedSending( mailqueue.size() == 0 ? true : false);
     currentState = Disconnected;
 }
@@ -217,6 +218,18 @@ void Mailer::sendAUTHLOGINpassword()
     socketStream << sendstring;
     socketStream.flush();
     currentState = AUTH;
+}
+
+void Mailer::sendSTARTTLS()
+{
+    QString sendstring = "STARTTLS\r\n";
+#ifdef DEBUG
+    qDebug() << "Sending: " << sendstring.left(sendstring.size()-2);;
+#endif
+    socketStream << sendstring;
+    socketStream.flush();
+    currentState = Connected;
+    startTLSstate = postSTARTTLS;
 }
 
 /**
@@ -393,21 +406,31 @@ void Mailer::dataReadyForReading()
 
         case Disconnected   :
         case Connected      :
+                                if (startTLSstate == postSTARTTLS)
+                                    socket->startClientEncryption();
                                 sendEHLO();
                                 break;
         case EHLOsent       :
+                                if (encryptionUsed == STARTTLS && startTLSstate == preSTARTTLS){
+                                    sendSTARTTLS();
+                                    break;
+                                }
                                 if (authMethodToUse == NO_Auth)
                                     sendMAILFROM();
                                 else if (authMethodToUse == LOGIN)
                                     sendAUTHLOGIN();
                                 break;
-        case AUTH           :   sendAUTHLOGIN();
+        case AUTH           :
+                                sendAUTHLOGIN();
                                 break;
-        case MAILFROMsent   :   sendTO();
+        case MAILFROMsent   :
+                                sendTO();
                                 break;
-        case TOsent         :   sendDATA();
+        case TOsent         :
+                                sendDATA();
                                 break;
-        case DATAsent       :   sendMessagecontent();
+        case DATAsent       :
+                                sendMessagecontent();
                                 break;
         case CONTENTsent    :
                                 mailProcessed();
@@ -416,7 +439,8 @@ void Mailer::dataReadyForReading()
         case RSETsent       :
                                 sendNextMailOrQuit();
                                 break;
-        case QUITsent       :   disconnectFromServer();
+        case QUITsent       :
+                                disconnectFromServer();
                                 break;
 
     }

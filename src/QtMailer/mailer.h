@@ -45,6 +45,11 @@ class Mailer : public QObject
         PASSWORDsent
     };
 
+    enum STARTTLSstate{
+       preSTARTTLS,
+       postSTARTTLS
+    };
+
 
 public:
     enum ENCRYPTION{
@@ -94,6 +99,7 @@ protected:
     SMTP_Auth_Method    authMethodToUse{NO_Auth};
     ENCRYPTION          encryptionUsed{UNENCRYPTED};
     SMTP_Login_State    loginState{PRELOGIN};
+    STARTTLSstate       startTLSstate{preSTARTTLS};
     QString             username;
     QString             password;
 
@@ -102,6 +108,7 @@ protected:
     void                sendAUTHLOGIN();
     void                sendAUTHLOGINuser();
     void                sendAUTHLOGINpassword();
+    void                sendSTARTTLS();
     void                sendEHLO();
     void                sendMAILFROM();
     void                sendTO();

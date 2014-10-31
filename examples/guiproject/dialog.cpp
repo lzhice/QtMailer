@@ -78,6 +78,27 @@ Dialog::Dialog(QWidget *parent)
     // and if we start sending using the status dialog, the dialog will be
     // refreshed as needed
     status->startSending();
+
+
+    // OK, but we can also send mails over encrypted connections using STARTTLS.
+    // We still use LOGIN als AUTH-Method.
+    mailer->setEncryptionUsed(Mailer::ENCRYPTION::STARTTLS);
+    mailer->setAUTHMethod(Mailer::SMTP_Auth_Method::LOGIN);
+    mailer->setServer("smtp.example.com");  // we can connect an other server.
+    mailer->setSmtpPort(587);               // and we want an other port to use.
+
+    // And again enqueue a mail..
+    mailer->enqueueMail(
+                        Mail(
+                             "you@example.com",                     // Receipient
+                             "me@example.com",                      // Sender
+                             "Encrypted using STARTLS"              // Subject
+                             "Strangers in the night."              // Content
+                            )
+                        );
+
+    // and again we kick the shit out
+    status->startSending();
 }
 
 Dialog::~Dialog()

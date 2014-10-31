@@ -75,15 +75,15 @@ QString Mail::plaintextMail() const
     message.append("From: "+sender+"\r\n");
     message.append("Subject: "+ subject +"\r\n"); // folding seems to insert whitespaces?! So omitted
 
-    // A multipart message is generated when we hate attachments
+    // A multipart message is generated when we have attachments
     if (!attachments.isEmpty()){
         message.append("MIME-Version: 1.0\r\n");
         message.append("Content-type: multipart/mixed; boundary=\"" BOUNDARY "\"\r\n\r\n");
-        message.append("--" BOUNDARY "\r\n\r\n");
+        message.append("--" BOUNDARY "\r\n");
     }
 
     // Messagebody
-    message.append(body+"\r\n");
+    message.append("\r\n"+body+"\r\n");
 
     // If we have attachments .... add them
     if (!attachments.isEmpty()){
