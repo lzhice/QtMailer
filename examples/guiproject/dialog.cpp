@@ -57,8 +57,8 @@ Dialog::Dialog(QWidget *parent)
 
 
     // Next we want so send mails over SSL-encrypted TCP-connection with a
-    // Login using a username and password (STARTTLS is not supported atm,
-    // and PLAIN as AUTH-Method isn't supported neither).
+    // Login using LOGIN with a username and password (PLAIN as AUTH-Method
+    // isn't supported yet). Using STARTTLS is shown later.
     mailer->setEncryptionUsed(Mailer::ENCRYPTION::SSL);
     mailer->setAUTHMethod(Mailer::SMTP_Auth_Method::LOGIN);
     mailer->setSmtpPort(465);
