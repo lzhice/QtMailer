@@ -118,6 +118,7 @@ protected:
     void                sendRSET();
     void                sendNextMailOrQuit();
     void                mailProcessed();
+    QString             pureMailaddressFromAddressstring(const QString &addressstring);
 
 signals:
     void finishedSending(bool queueEmpty);

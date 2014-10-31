@@ -1,52 +1,52 @@
 #include "mail.h"
 
-Mail::Mail(QStringList toReceipients, QStringList ccReceipients, QStringList bccReceipients, QString sender, QString subject, QString body, QList<QFileInfo> attachments, QObject *parent) :
-    QObject(parent), toReceipients{toReceipients}, ccReceipients{ccReceipients}, bccReceipients{bccReceipients}, sender{sender}, subject{subject}, body{body}, attachments{attachments}
+Mail::Mail(QStringList toRecepients, QStringList ccRecepients, QStringList bccRecepients, QString sender, QString subject, QString body, QList<QFileInfo> attachments, QObject *parent) :
+    QObject(parent), toRecepients{toRecepients}, ccRecepients{ccRecepients}, bccRecepients{bccRecepients}, sender{sender}, subject{subject}, body{body}, attachments{attachments}
 {
 }
 
-Mail::Mail(QStringList toReceipients, QStringList ccReceipients, QStringList bccReceipients, QString sender, QString subject, QString body, QFileInfo attachment, QObject *parent) :
-      Mail(toReceipients, ccReceipients, bccReceipients, sender, subject, body, QList<QFileInfo>(), parent)
+Mail::Mail(QStringList toRecepients, QStringList ccRecepients, QStringList bccRecepients, QString sender, QString subject, QString body, QFileInfo attachment, QObject *parent) :
+      Mail(toRecepients, ccRecepients, bccRecepients, sender, subject, body, QList<QFileInfo>(), parent)
 {
     attachments.append(attachment);
 }
 
-Mail::Mail(QStringList toReceipients, QStringList ccReceipients, QStringList bccReceipients, QString sender, QString subject, QString body, QObject *parent) :
-      Mail(toReceipients, ccReceipients, bccReceipients, sender, subject, body, QList<QFileInfo>(), parent)
+Mail::Mail(QStringList toRecepients, QStringList ccRecepients, QStringList bccRecepients, QString sender, QString subject, QString body, QObject *parent) :
+      Mail(toRecepients, ccRecepients, bccRecepients, sender, subject, body, QList<QFileInfo>(), parent)
 {
 }
 
-Mail::Mail(QStringList toReceipients, QString sender, QString subject, QString body, QList<QFileInfo> attachments, QObject *parent) :
-      Mail(toReceipients, QStringList(), QStringList(), sender, subject, body, attachments, parent)
+Mail::Mail(QStringList toRecepients, QString sender, QString subject, QString body, QList<QFileInfo> attachments, QObject *parent) :
+      Mail(toRecepients, QStringList(), QStringList(), sender, subject, body, attachments, parent)
 {
 }
 
-Mail::Mail(QStringList toReceipients, QString sender, QString subject, QString body, QFileInfo attachment, QObject *parent) :
-      Mail(toReceipients, QStringList(), QStringList(), sender, subject, body, QList<QFileInfo>(), parent)
+Mail::Mail(QStringList toRecepients, QString sender, QString subject, QString body, QFileInfo attachment, QObject *parent) :
+      Mail(toRecepients, QStringList(), QStringList(), sender, subject, body, QList<QFileInfo>(), parent)
 {
     attachments.append(attachment);
 }
 
-Mail::Mail(QStringList toReceipients, QString sender, QString subject, QString body, QObject *parent) :
-      Mail(toReceipients, QStringList(), QStringList(), sender, subject, body, QList<QFileInfo>(), parent)
+Mail::Mail(QStringList toRecepients, QString sender, QString subject, QString body, QObject *parent) :
+      Mail(toRecepients, QStringList(), QStringList(), sender, subject, body, QList<QFileInfo>(), parent)
 {
 }
 
-Mail::Mail(QString toReceipient, QString sender, QString subject, QString body, QObject *parent) :
+Mail::Mail(QString toRecepient, QString sender, QString subject, QString body, QObject *parent) :
       Mail(QStringList(), QStringList(), QStringList(), sender, subject, body, QList<QFileInfo>(), parent)
 {
-    toReceipients.append(toReceipient);
+    toRecepients.append(toRecepient);
 }
 
-Mail::Mail(QString toReceipient, QString sender, QString subject, QString body, QFileInfo attachment, QObject *parent) :
+Mail::Mail(QString toRecepient, QString sender, QString subject, QString body, QFileInfo attachment, QObject *parent) :
       Mail(QStringList(), QStringList(), QStringList(), sender, subject, body, QList<QFileInfo>(), parent)
 {
-    toReceipients.append(toReceipient);
+    toRecepients.append(toRecepient);
     attachments.append(attachment);
 }
 
 Mail::Mail(const Mail &other) :
-    QObject(other.parent()), toReceipients{other.toReceipients}, ccReceipients{other.ccReceipients}, bccReceipients{other.bccReceipients}, sender{other.sender}, subject{other.subject},
+    QObject(other.parent()), toRecepients{other.toRecepients}, ccRecepients{other.ccRecepients}, bccRecepients{other.bccRecepients}, sender{other.sender}, subject{other.subject},
     body{other.body}, attachments{other.attachments}
 {
 }
@@ -64,12 +64,12 @@ QString Mail::plaintextMail() const
     QString message;
 
     // To- Cc- and Bcc-lines
-    if (!toReceipients.isEmpty())
-        message.append(receipientHeaderLineFromStringList("To: ", toReceipients));
-    if (!ccReceipients.isEmpty())
-        message.append(receipientHeaderLineFromStringList("Cc: ", ccReceipients));
-    if (!bccReceipients.isEmpty())
-        message.append(receipientHeaderLineFromStringList("Bcc: ", bccReceipients));
+    if (!toRecepients.isEmpty())
+        message.append(recepientHeaderLineFromStringList("To: ", toRecepients));
+    if (!ccRecepients.isEmpty())
+        message.append(recepientHeaderLineFromStringList("Cc: ", ccRecepients));
+    if (!bccRecepients.isEmpty())
+        message.append(recepientHeaderLineFromStringList("Bcc: ", bccRecepients));
 
     // Set From:-line
     message.append("From: "+sender+"\r\n");
@@ -122,40 +122,40 @@ QString Mail::getSender() const
 
 /**
  * Returns a QStringList holding all the mailadresses from to, cc and bcc
- * @return all receipients mailaddresses
+ * @return all recepients mailaddresses
  */
-QStringList Mail::getAllReceipients() const
+QStringList Mail::getAllRecepients() const
 {
     QStringList result;
-    result = toReceipients + ccReceipients + bccReceipients;
+    result = toRecepients + ccRecepients + bccRecepients;
     return result;
 }
 
 /**
  * All addresses from the To:-header
- * @return receipients
+ * @return recepients
  */
-QStringList Mail::getToReceipients() const
+QStringList Mail::getToRecepients() const
 {
-    return toReceipients;
+    return toRecepients;
 }
 
 /**
  * All addresses from the Cc:-header
- * @return receipients
+ * @return recepients
  */
-QStringList Mail::getCcReceipients() const
+QStringList Mail::getCcRecepients() const
 {
-    return ccReceipients;
+    return ccRecepients;
 }
 
 /**
  * All addresses from the Bcc:-header
- * @return receipients
+ * @return recepients
  */
-QStringList Mail::getBccReceipients() const
+QStringList Mail::getBccRecepients() const
 {
-    return bccReceipients;
+    return bccRecepients;
 }
 
 /**
@@ -224,7 +224,7 @@ QString Mail::mimetypeForFile(const QFileInfo &fileinfo) const
  * @param addresses QStringList holdig the mailaddresses
  * @return          folded headerline
  */
-QString Mail::receipientHeaderLineFromStringList(QString header, QStringList addresses) const
+QString Mail::recepientHeaderLineFromStringList(QString header, QStringList addresses) const
 {
     QString result = header;
     uint linelength = result.size();

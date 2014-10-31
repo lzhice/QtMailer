@@ -251,7 +251,9 @@ void Mailer::sendEHLO()
  */
 void Mailer::sendMAILFROM()
 {
-    QString sendstring = "MAIL FROM:<" + mailqueue.front().getSender() + ">\r\n";
+    QString sendstring = "MAIL FROM:<" +
+                         pureMailaddressFromAddressstring(mailqueue.front().getSender()) +
+                         ">\r\n";
 #ifdef DEBUG
     qDebug() << "Sending: " << sendstring.left(sendstring.size()-2);;
 #endif
@@ -266,14 +268,14 @@ void Mailer::sendMAILFROM()
 void Mailer::sendTO()
 {
     QString sendstring = "RCPT TO:<" +
-                         mailqueue.front().getAllReceipients().at(recepientsSent++) +
+                         pureMailaddressFromAddressstring(mailqueue.front().getAllRecepients().at(recepientsSent++)) +
                          ">\r\n";
 #ifdef DEBUG
     qDebug() << "Sending: " << sendstring.left(sendstring.size()-2);;
 #endif
     socketStream << sendstring;
     socketStream.flush();
-    if (recepientsSent == mailqueue.front().getAllReceipients().size()) {
+    if (recepientsSent == mailqueue.front().getAllRecepients().size()) {
         recepientsSent = 0;
         currentState = TOsent;
     }
@@ -570,3 +572,22 @@ void Mailer::setEncryptionUsed(const ENCRYPTION &value)
     encryptionUsed = value;
 }
 
+/**
+ * In mailclients you often want to set a readable name for a recepient additional
+ * to the pure mailaddress e.g. "Test user <testuser@example.com>".
+ * This method extracts the pure mailaddress to use it in the communication
+ * to the mailserver.
+ *
+ * @param addressstring as used by the client
+ * @return stripped down pure mailaddress
+ */
+QString Mailer::pureMailaddressFromAddressstring(const QString &addressstring)
+{
+    if (addressstring.contains(QRegExp(R"(^[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$)")))
+        return addressstring;
+
+    QString returnValue = addressstring;
+    returnValue.remove(QRegExp(R"(^.*<)"));
+    returnValue.remove(QRegExp(R"(>$)"));
+    return returnValue;
+}

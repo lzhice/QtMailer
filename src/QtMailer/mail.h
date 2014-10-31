@@ -20,52 +20,52 @@ class Mail : public QObject
 {
     Q_OBJECT
 public:
-    explicit Mail(QStringList toReceipients,
-                  QStringList ccReceipients,
-                  QStringList bccReceipients,
+    explicit Mail(QStringList toRecepients,
+                  QStringList ccRecepients,
+                  QStringList bccRecepients,
                   QString sender,
                   QString subject,
                   QString body,
                   QList<QFileInfo> attachments,
                   QObject *parent = 0);
-    explicit Mail(QStringList toReceipients,
-                  QStringList ccReceipients,
-                  QStringList bccReceipients,
+    explicit Mail(QStringList toRecepients,
+                  QStringList ccRecepients,
+                  QStringList bccRecepients,
                   QString sender,
                   QString subject,
                   QString body,
                   QFileInfo attachment,
                   QObject *parent = 0);
-    explicit Mail(QStringList toReceipients,
-                  QStringList ccReceipients,
-                  QStringList bccReceipients,
+    explicit Mail(QStringList toRecepients,
+                  QStringList ccRecepients,
+                  QStringList bccRecepients,
                   QString sender,
                   QString subject,
                   QString body,
                   QObject *parent = 0);
-    explicit Mail(QStringList toReceipients,
+    explicit Mail(QStringList toRecepients,
                   QString sender,
                   QString subject,
                   QString body,
                   QList<QFileInfo> attachments,
                   QObject *parent = 0);
-    explicit Mail(QStringList toReceipients,
+    explicit Mail(QStringList toRecepients,
                   QString sender,
                   QString subject,
                   QString body,
                   QFileInfo attachments,
                   QObject *parent = 0);
-    explicit Mail(QStringList toReceipients,
+    explicit Mail(QStringList toRecepients,
                   QString sender,
                   QString subject,
                   QString body,
                   QObject *parent = 0);
-    explicit Mail(QString toReceipient,
+    explicit Mail(QString toRecepient,
                   QString sender,
                   QString subject,
                   QString body,
                   QObject *parent = 0);
-    explicit Mail(QString toReceipient,
+    explicit Mail(QString toRecepient,
                   QString sender,
                   QString subject,
                   QString body,
@@ -75,16 +75,16 @@ public:
 
     QString             plaintextMail() const;
     QString             getSender() const;
-    QStringList         getAllReceipients() const;
-    QStringList         getToReceipients() const;
-    QStringList         getCcReceipients() const;
-    QStringList         getBccReceipients() const;
+    QStringList         getAllRecepients() const;
+    QStringList         getToRecepients() const;
+    QStringList         getCcRecepients() const;
+    QStringList         getBccRecepients() const;
     std::pair<int,int>  lastErrors() const;
 
 protected:
-    QStringList         toReceipients;
-    QStringList         ccReceipients;
-    QStringList         bccReceipients;
+    QStringList         toRecepients;
+    QStringList         ccRecepients;
+    QStringList         bccRecepients;
     QString             sender;
     QString             subject;
     QString             body;
@@ -93,7 +93,7 @@ protected:
     QString         generateBase64FromFile(const QFileInfo&) const;
     QString         foldString(const QString& original) const;
     QString         mimetypeForFile(const QFileInfo& file) const;
-    QString         receipientHeaderLineFromStringList(QString header, QStringList addresses) const;
+    QString         recepientHeaderLineFromStringList(QString header, QStringList addresses) const;
 
 signals:
 

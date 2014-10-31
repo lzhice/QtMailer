@@ -22,8 +22,8 @@ Dialog::Dialog(QWidget *parent)
     // The easiest way to create a pure mail without atttachments
     mailer->enqueueMail(
                         Mail(
-                             "you@example.com",                     // Receipient
-                             "me@example.com",                      // Sender
+                             "Your Name <you@example.com>",         // Receipient
+                             "My Name <me@example.com>",            // Sender
                              "My Subject",                          // Subject
                              "And the mailcontent I'd like to send" // Content
                             )
@@ -90,9 +90,9 @@ Dialog::Dialog(QWidget *parent)
     // And again enqueue a mail..
     mailer->enqueueMail(
                         Mail(
-                             "you@example.com",                     // Receipient
-                             "me@example.com",                      // Sender
-                             "Encrypted using STARTLS"              // Subject
+                             "Your Name <you@example.com>",         // Receipient
+                             "My Name <me@example.com>",            // Sender
+                             "Encrypted using STARTLS",             // Subject
                              "Strangers in the night."              // Content
                             )
                         );
