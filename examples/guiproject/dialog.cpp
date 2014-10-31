@@ -22,7 +22,7 @@ Dialog::Dialog(QWidget *parent)
     // The easiest way to create a pure mail without atttachments
     mailer->enqueueMail(
                         Mail(
-                             "Your Name <you@example.com>",         // Receipient
+                             "Your Name <you@example.com>",         // Recepient
                              "My Name <me@example.com>",            // Sender
                              "My Subject",                          // Subject
                              "And the mailcontent I'd like to send" // Content
@@ -32,7 +32,7 @@ Dialog::Dialog(QWidget *parent)
     // If you'd like to enque a mail with an attachnemt
     mailer->enqueueMail(
                         Mail(
-                            "you@example.com",                      // Receipient
+                            "you@example.com",                      // Recepient
                             "me@example.com",                       // Sender
                             "Now with Attachment",                  // Subject
                             "Here is the attachment you wanted",    // Content
@@ -68,7 +68,7 @@ Dialog::Dialog(QWidget *parent)
     // And again enqueue a mail..
     mailer->enqueueMail(
                         Mail(
-                             "you@example.com",                     // Receipient
+                             "you@example.com",                     // Recepient
                              "me@example.com",                      // Sender
                              "My encrypted mail",                   // Subject
                              "And the mailcontent I'd like to send" // Content
@@ -90,7 +90,7 @@ Dialog::Dialog(QWidget *parent)
     // And again enqueue a mail..
     mailer->enqueueMail(
                         Mail(
-                             "Your Name <you@example.com>",         // Receipient
+                             "Your Name <you@example.com>",         // Recepient
                              "My Name <me@example.com>",            // Sender
                              "Encrypted using STARTLS",             // Subject
                              "Strangers in the night."              // Content
