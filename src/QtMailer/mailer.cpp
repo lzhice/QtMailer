@@ -1,5 +1,42 @@
 #include "mailer.h"
 
+/**
+  * @class Mailer
+  *
+  * @brief The Mailerclass to connect to smtp-servers and send mails
+  *
+  * The class is responsible for the connection to the smtp-server and the
+  * communication with it. The class holds all mails enqueued with enqueueMail()
+  * in a doublesided queue. When sendAllMails() is called it tries to connect to
+  * the server and send the mails which are currently inside the queue.
+  *
+  * After each processed mail (if sucessfull or not) the class emits the signal
+  * mailsHaveBeenProcessedTillNow(int) with the number of mails processed. This
+  * gives you the possibility to connect this signal to a QProcessBar.
+  *
+  * When the class finished proceccing all mails once it emits
+  * finishedSending(bool) which also indicates if the mailqueue is empty. If not
+  * we can assume there were some errors.
+  *
+  * If mails can not be send to the server, caused by connection errors or
+  * communication errors with the server, the mails are put to the back of the
+  * mailqueue if the error is temporary. You can than decide what to do with
+  * them. In case of permanent errors the mail will be deleted and will never be
+  * seen again.
+  *
+  * For any error that occures while processing the mailconnection the class
+  * emits errorSendingMails(int, QString) which gives you the SMTP-Error-Code
+  * for smtp errors. If there are connection dependend errors the Error-Code is
+  * 0, and for SSL-Connection-Errors it is 1. The second argument is a human
+  * readable errorstring (but if it helps you depends...).
+  */
+
+/**
+ * Constructor for a new Mailer object
+ * @param server    address of the smtp-server to use
+ * @param parent    Qt parent object if present
+ */
+
 Mailer::Mailer(const QString &server, QObject *parent) :
     QObject(parent), server{server}
 {

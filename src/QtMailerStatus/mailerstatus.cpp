@@ -1,5 +1,16 @@
 #include "mailerstatus.h"
 
+/**
+  * @class MailerStatus
+  *
+  * @brief Gives a little dialog window showing the progress of a Mailer class.
+  *
+  * When connected to a Mailer object it shows the progress of the processing.
+  * It can cancel the session and start a retry if there are mails left in the
+  * queue (due to temporary errors). If there are error sending it shows the
+  * latest error occured.
+  */
+
 MailerStatus::MailerStatus(Mailer *mailer, bool closeOnFinish, QWidget *parent) :
     QDialog(parent), mailer{mailer}, closeOnFinish{closeOnFinish}
 {

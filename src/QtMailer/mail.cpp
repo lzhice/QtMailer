@@ -1,4 +1,12 @@
 #include "mail.h"
+/**
+  * @class Mail
+  *
+  * @brief Represents a mail with all content.
+  *
+  * The class represents a mail to use with Mailer. It can handle different
+  * lists for To, Cc and Bcc and can have multiple attachments if needed.
+  */
 
 Mail::Mail(QStringList toRecepients, QStringList ccRecepients, QStringList bccRecepients, QString sender, QString subject, QString body, QList<QFileInfo> attachments, QObject *parent) :
     QObject(parent), toRecepients{toRecepients}, ccRecepients{ccRecepients}, bccRecepients{bccRecepients}, sender{sender}, subject{subject}, body{body}, attachments{attachments}
