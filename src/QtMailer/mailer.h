@@ -119,6 +119,8 @@ protected:
     void                sendNextMailOrQuit();
     void                mailProcessed();
     QString             pureMailaddressFromAddressstring(const QString &addressstring);
+    bool                validPureMailaddress(const QString& address);
+    bool                validDecoratedAddtess(const QString& address);
 
 signals:
     void finishedSending(bool queueEmpty);

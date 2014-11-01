@@ -583,11 +583,37 @@ void Mailer::setEncryptionUsed(const ENCRYPTION &value)
  */
 QString Mailer::pureMailaddressFromAddressstring(const QString &addressstring)
 {
-    if (addressstring.contains(QRegExp(R"(^[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$)")))
+    // if the string is a plain mailaddress return it as is
+    if (validPureMailaddress(addressstring))
         return addressstring;
 
+    // if we don't have a sane string return it as is.
+    if (!validDecoratedAddtess(addressstring))
+        return addressstring;
+
+    // So we have an addressstring with descriotion an <mailaddress>, then cut anything including <> away
     QString returnValue = addressstring;
     returnValue.remove(QRegExp(R"(^.*<)"));
-    returnValue.remove(QRegExp(R"(>$)"));
+    returnValue.remove(QRegExp(R"(>\s*$)"));
     return returnValue;
+}
+
+/**
+ * Tests if a string contains a valid plain mailaddress as in "local@domain.tld".
+ * @param address   the address to test.
+ * @return true if address is a valid plain mailaddress
+ */
+inline bool Mailer::validPureMailaddress(const QString &address)
+{
+    return address.contains(QRegExp(R"(^[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$)"));
+}
+
+/**
+ * Tests if a string contains a valid plain mailaddress as in "My Name <local@domain.tld>".
+ * @param address   the address to test.
+ * @return true if address is a valid decorated mailaddress
+ */
+inline bool Mailer::validDecoratedAddtess(const QString &address)
+{
+    return address.contains(R"(^.*<[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}>\s*$)");
 }
