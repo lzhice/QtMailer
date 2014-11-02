@@ -86,7 +86,7 @@ Dialog::Dialog(QWidget *parent)
     mailer->setAUTHMethod(Mailer::SMTP_Auth_Method::LOGIN);
     mailer->setServer("smtp.example.com");  // we can connect an other server.
     mailer->setSmtpPort(587);               // and we want an other port to use.
-    mailer->ignoreSelfSignedCertificates();	// we want to accept selfsigned
+    mailer->ignoreSelfSignedCertificates(); // we want to accept selfsigned
 
     // And again enqueue a mail..
     mailer->enqueueMail(
