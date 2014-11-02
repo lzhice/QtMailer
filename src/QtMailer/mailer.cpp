@@ -78,6 +78,7 @@ int Mailer::sizeOfQueue() const
  */
 bool Mailer::sendAllMails()
 {
+
     // Only start sending if we aren't busy
     if (currentState != Disconnected)   return false;
     // don't send if we have no mails.
@@ -515,9 +516,13 @@ void Mailer::errorReceived(QAbstractSocket::SocketError)
 void Mailer::sslErrorsReceived(QList<QSslError> errors)
 {
     foreach (QSslError error, errors){
-        emit errorSendingMails(1, error.errorString());
-        // Uncomment to accept ANY SSL-Errors (eg. self signed)... not the best idea.
-//        socket->ignoreSslErrors();
+        if (ignoreSelfSigned){
+            QList<QSslError> liste;
+            liste.append(QSslError(QSslError::SelfSignedCertificate, socket->peerCertificate()));
+            socket->ignoreSslErrors(liste);
+        }
+        if (!(ignoreSelfSigned && (error.error() == QSslError::SelfSignedCertificate)))
+            emit errorSendingMails(1, error.errorString());
     }
     disconnectFromServer();
 }
@@ -625,7 +630,7 @@ QString Mailer::pureMailaddressFromAddressstring(const QString &addressstring)
         return addressstring;
 
     // if we don't have a sane string return it as is.
-    if (!validDecoratedAddtess(addressstring))
+    if (!validDecoratedAddress(addressstring))
         return addressstring;
 
     // So we have an addressstring with descriotion an <mailaddress>, then cut anything including <> away
@@ -650,7 +655,15 @@ inline bool Mailer::validPureMailaddress(const QString &address)
  * @param address   the address to test.
  * @return true if address is a valid decorated mailaddress
  */
-inline bool Mailer::validDecoratedAddtess(const QString &address)
+inline bool Mailer::validDecoratedAddress(const QString &address)
 {
-    return address.contains(R"(^.*<[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}>\s*$)");
+    return address.contains(QRegExp(R"(^.*<[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}>\s*$)"));
+}
+
+/**
+ * Ignore self signed certificates
+ */
+void Mailer::ignoreSelfSignedCertificates(bool ignore)
+{
+    ignoreSelfSigned = ignore;
 }

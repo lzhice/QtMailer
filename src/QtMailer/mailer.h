@@ -10,6 +10,7 @@
 #include <QSslSocket>
 #include <QHostInfo>
 #include <QEventLoop>
+#include <QSslError>
 
 #include "mail.h"
 
@@ -80,6 +81,7 @@ public:
     void                    setPassword(const QString &value);
     void                    setUsername(const QString &value);
     void                    setEncryptionUsed(const ENCRYPTION &value);
+    void					ignoreSelfSignedCertificates(bool ignore = true);
 
 protected:
     QString             server;
@@ -102,6 +104,7 @@ protected:
     STARTTLSstate       startTLSstate{preSTARTTLS};
     QString             username;
     QString             password;
+    bool				ignoreSelfSigned{false};
 
     bool                connectToServer();
     void                disconnectFromServer();
@@ -120,7 +123,7 @@ protected:
     void                mailProcessed();
     QString             pureMailaddressFromAddressstring(const QString &addressstring);
     bool                validPureMailaddress(const QString& address);
-    bool                validDecoratedAddtess(const QString& address);
+    bool                validDecoratedAddress(const QString& address);
 
 signals:
     void finishedSending(bool queueEmpty);
