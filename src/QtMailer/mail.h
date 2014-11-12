@@ -93,7 +93,8 @@ protected:
     QString         generateBase64FromFile(const QFileInfo&) const;
     QString         foldString(const QString& original) const;
     QString         mimetypeForFile(const QFileInfo& file) const;
-    QString         recepientHeaderLineFromStringList(const QString& header, const QStringList& addresses) const;
+    QString         recepientHeaderLineFromStringList(const QString& header,
+                                                      const QStringList& addresses) const;
 
 signals:
 

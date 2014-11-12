@@ -114,7 +114,8 @@ void Dialog::finishedSending(bool empty)
 
 void Dialog::mailsBeeingProcessed(int count)
 {
-    qDebug() << QString::number(count).append(" mail").append(count == 1 ? "" : "s").append(" have been processed till now.");
+    qDebug() << QString::number(count).append(" mail").append(count == 1 ? "" : "s").
+                append(" have been processed till now.");
 }
 
 void Dialog::errorOccured(int smtpFehlercode, QString fehlerText)

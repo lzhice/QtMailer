@@ -306,7 +306,8 @@ void Mailer::sendMAILFROM()
 void Mailer::sendTO()
 {
     QString sendstring = "RCPT TO:<" +
-                         pureMailaddressFromAddressstring(mailqueue.front().getAllRecepients().at(recepientsSent++)) +
+                         pureMailaddressFromAddressstring(mailqueue.front().getAllRecepients().
+                                                          at(recepientsSent++)) +
                          ">\r\n";
 #ifdef DEBUG
     qDebug() << "Sending: " << sendstring.left(sendstring.size()-2);;
@@ -657,7 +658,9 @@ inline bool Mailer::validPureMailaddress(const QString &address)
  */
 inline bool Mailer::validDecoratedAddress(const QString &address)
 {
-    return address.contains(QRegExp(R"(^.*<[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}>\s*$)"));
+    return address.contains(QRegExp(
+                                R"(^.*<[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}>\s*$)"
+                                ));
 }
 
 /**

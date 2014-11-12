@@ -84,7 +84,8 @@ Mail::Mail(const Mail &other) :
 /**
  * @brief Takes all information and create one big string representing all the maildata.
  *
- * This string can be given to an smtp-server after DATA. All lines should be folded as needed according to rfc5321. ^^
+ * This string can be given to an smtp-server after DATA. All lines should be folded as needed
+ * according to rfc5321. ^^
  *
  * @return String holding the raw maildata
  */
