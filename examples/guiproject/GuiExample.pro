@@ -2,9 +2,6 @@ QT       += core gui network
 
 CONFIG += c++11
 
-DEFINES += DEBUG
-
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = GuiExample
