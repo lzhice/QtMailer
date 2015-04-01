@@ -652,7 +652,7 @@ QString Mailer::pureMailaddressFromAddressstring(const QString &addressstring)
     if (!validDecoratedAddress(addressstring))
         return addressstring;
 
-    // So we have an addressstring with descriotion an <mailaddress>, then cut anything including <> away
+    // So we have an addressstring with decoration and <mailaddress>, then cut away anything including <>
     QString returnValue = addressstring;
     returnValue.remove(QRegExp(R"(^.*<)"));
     returnValue.remove(QRegExp(R"(>\s*$)"));
