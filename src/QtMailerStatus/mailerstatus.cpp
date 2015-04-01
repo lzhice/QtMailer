@@ -11,6 +11,12 @@
   * latest error occured.
   */
 
+/**
+ * Constructor
+ * @param mailer        Mailer-object to use to send the mails
+ * @param closeOnFinish true closes the window after successfull finish
+ * @param parent        Qt-parent
+ */
 MailerStatus::MailerStatus(Mailer *mailer, bool closeOnFinish, QWidget *parent) :
     QDialog(parent), mailer{mailer}, closeOnFinish{closeOnFinish}
 {
@@ -69,6 +75,10 @@ MailerStatus::MailerStatus(Mailer *mailer, bool closeOnFinish, QWidget *parent) 
     this->show();
 }
 
+
+/**
+ * Sets the inital status for the widgets
+ */
 void MailerStatus::initalStatus()
 {
     ok->setEnabled(false);
@@ -81,6 +91,14 @@ void MailerStatus::initalStatus()
                    MAILERSTATUS_LABELSTDTEXT2);
 }
 
+
+/**
+ * Will be called after the mailer finished sending MailerStatus
+ *
+ * If the mailqueue of the mailer is empty the retry-button will be disabled, otherwise it is enabled to
+ * allow the user to resend the remaining mails.
+ * It the mails were sent sucessfully and closeOnFinish is set the widget will be closed.
+ */
 void MailerStatus::mailerFinished()
 {
     cancel->setEnabled(false);
@@ -113,12 +131,23 @@ void MailerStatus::mailerFinished()
                    );
 }
 
+
+/**
+ * Starts the mailer to send all mails beeing kept in the mailqueue.
+ */
 void MailerStatus::startSending()
 {
     initalStatus();
     mailer->sendAllMails();
 }
 
+
+/**
+ * Slot that will be called if the mailer has any errors.
+ *
+ * @param errorCode the received errorcode (0 for connection errors, 1 for ssl errors or SMTP errorcode)
+ * @param text      an errordescription
+ */
 void MailerStatus::errorReceived(int errorCode, QString text)
 {
     if (errorCode == 0){
@@ -131,6 +160,11 @@ void MailerStatus::errorReceived(int errorCode, QString text)
     cancel->setEnabled(false);
 }
 
+
+/**
+ * Overrides the closeEvent to let the widget only be closed if the ok-button is enabled
+ * @param event the closing event
+ */
 void MailerStatus::closeEvent(QCloseEvent *event)
 {
     if (ok->isEnabled()) event->accept();

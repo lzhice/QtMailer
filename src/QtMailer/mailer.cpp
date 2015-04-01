@@ -31,12 +31,12 @@
   * readable errorstring (but if it helps you depends...).
   */
 
+
 /**
  * Constructor for a new Mailer object
  * @param server    address of the smtp-server to use
  * @param parent    Qt parent object if present
  */
-
 Mailer::Mailer(const QString &server, QObject *parent) :
     QObject(parent), server{server}
 {
@@ -62,6 +62,7 @@ Mailer::Mailer(const QString &server, QObject *parent) :
             );
 }
 
+
 /**
  * @brief Returns the number of mails beeing held in the mailqueue
  * @return the size oh the mailqueue
@@ -70,6 +71,7 @@ int Mailer::sizeOfQueue() const
 {
     return mailqueue.size();
 }
+
 
 /**
  * Starts the process of sending all mails in the mailqueue
@@ -91,6 +93,7 @@ bool Mailer::sendAllMails()
     return true;
 }
 
+
 /**
  * External interface to cancel the sending of mails.
  *
@@ -100,6 +103,7 @@ void Mailer::cancelSending()
 {
     sendQUIT();
 }
+
 
 /**
  * Pushes a mailobject to the end of the mailqueue
@@ -111,6 +115,7 @@ void Mailer::enqueueMail(const Mail &mail)
     mailqueue.push_back(mail);
 }
 
+
 /**
  * Returns the currently set mailserver
  *
@@ -121,6 +126,7 @@ QString Mailer::getServer() const
     return server;
 }
 
+
 /**
  * Sets the mailserver to use with the future sendingAllMails()
  * @param value newMailserver to use
@@ -129,6 +135,7 @@ void Mailer::setServer(const QString &value)
 {
     server = value;
 }
+
 
 /**
  * Returns true if the mailer ist currently connected to a mailserver
@@ -143,6 +150,7 @@ bool Mailer::isBusy()
     return true;
 }
 
+
 /**
  * Returns after when the mailer ist not busy anymore.
  */
@@ -153,6 +161,7 @@ void Mailer::waitForProcessing()
         loop.processEvents();
     }
 }
+
 
 /**
  * Connects to the currently set mailserver
@@ -189,6 +198,7 @@ bool Mailer::connectToServer()
     return true;
 }
 
+
 /**
  * Disconnects from the server and emits finishedSending()
  */
@@ -205,6 +215,10 @@ void Mailer::disconnectFromServer()
     currentState = Disconnected;
 }
 
+
+/**
+ * Sends authorisation information to the server and starts to send the mail using sendMAILFROM()
+ */
 void Mailer::sendAUTHLOGIN()
 {
     currentState = AUTH;
@@ -236,28 +250,10 @@ void Mailer::sendAUTHLOGIN()
     socketStream.flush();
 }
 
-void Mailer::sendAUTHLOGINuser()
-{
-    QString sendstring = username.toLocal8Bit().toBase64()+"\r\n";
-#ifdef DEBUG
-    qDebug() << "Sending: " << sendstring.left(sendstring.size()-2);;
-#endif
-    socketStream << sendstring;
-    socketStream.flush();
-    currentState = AUTH;
-}
 
-void Mailer::sendAUTHLOGINpassword()
-{
-    QString sendstring = password.toLocal8Bit().toBase64()+"\r\n";
-#ifdef DEBUG
-    qDebug() << "Sending: " << sendstring.left(sendstring.size()-2);;
-#endif
-    socketStream << sendstring;
-    socketStream.flush();
-    currentState = AUTH;
-}
-
+/**
+ * Sends STARTTLS to the server to start an encrypted TLS connection
+ */
 void Mailer::sendSTARTTLS()
 {
     QString sendstring = "STARTTLS\r\n";
@@ -269,6 +265,7 @@ void Mailer::sendSTARTTLS()
     currentState = Connected;
     startTLSstate = postSTARTTLS;
 }
+
 
 /**
  * Sends EHLO to the SMTP-server
@@ -283,6 +280,7 @@ void Mailer::sendEHLO()
     socketStream.flush();
     currentState = EHLOsent;
 }
+
 
 /**
  * Sends MAIL FROM: to the SMTP-server
@@ -299,6 +297,7 @@ void Mailer::sendMAILFROM()
     socketStream.flush();
     currentState = MAILFROMsent;
 }
+
 
 /**
  * Sends RCPT TO: to the SMTP-server
@@ -320,6 +319,7 @@ void Mailer::sendTO()
     }
 }
 
+
 /**
  * Sends DATA to the SMTP-server
  */
@@ -333,6 +333,7 @@ void Mailer::sendDATA()
     socketStream.flush();
     currentState = DATAsent;
 }
+
 
 /**
  * Sends the messagecontent to the SMTP-server
@@ -348,6 +349,7 @@ void Mailer::sendMessagecontent()
     currentState = CONTENTsent;
 }
 
+
 /**
  * Sends QUIT to the SMTP-server
  */
@@ -361,6 +363,7 @@ void Mailer::sendQUIT()
     socketStream.flush();
     currentState = QUITsent;
 }
+
 
 /**
  * Sends RSET to the SMTP-server
@@ -376,6 +379,7 @@ void Mailer::sendRSET()
     currentState = RSETsent;
 }
 
+
 /**
  * Invokes sendQUIT() to QUIT the session if all mails in the queue are processed once.
  * If not all mails are processed sendEHLO() starts the sending process for
@@ -390,6 +394,7 @@ void Mailer::sendNextMailOrQuit()
     }
 }
 
+
 /**
  * Pops the first element from the mailqueue and emits mailsHaveBeenProcessedTillNow()
  * and increments mailsProcesses by 1
@@ -402,6 +407,7 @@ void Mailer::mailProcessed()
         emit mailsHaveBeenProcessedTillNow(mailsProcessed);
     }
 }
+
 
 /**
  * Is called every time when there is new data ready to read on the tcp-socket
@@ -487,6 +493,7 @@ void Mailer::dataReadyForReading()
     }
 }
 
+
 /**
  * @brief Mailer::errorReceived
  *
@@ -506,6 +513,7 @@ void Mailer::errorReceived(QAbstractSocket::SocketError)
     disconnectFromServer();
     emit errorSendingMails(0, errorString);
 }
+
 
 /**
  * @brief Mailer::errorReceived
@@ -528,6 +536,7 @@ void Mailer::sslErrorsReceived(QList<QSslError> errors)
     disconnectFromServer();
 }
 
+
 /**
  * Returns the number of mails having errors during last connection.
  *
@@ -542,6 +551,7 @@ std::pair<int, int> Mailer::lastErrors() const
     return std::pair<int,int>(tempErrors, permErrors);
 }
 
+
 /**
  * Returns the currently set SMTP-port to use for connection to the server
  * @return smtp-port the server should listen on
@@ -550,6 +560,7 @@ int Mailer::getSmtpPort() const
 {
     return smtpPort;
 }
+
 
 /**
  * Sets the SMTP-Port the next connection should use for connecting to the server
@@ -560,6 +571,7 @@ void Mailer::setSmtpPort(int value)
     smtpPort = value;
 }
 
+
 /**
  * Returns the number of milliseconds to timeout a connectionattempt to the mailserver
  * @return timeout
@@ -568,6 +580,7 @@ int Mailer::getSmtpTimeout() const
 {
     return smtpTimeout;
 }
+
 
 /**
  * Sets the timeout in milliseconds for new established SMTP-sessions
@@ -579,6 +592,7 @@ void Mailer::setSmtpTimeout(int value)
     smtpTimeout = value;
 }
 
+
 /**
  * Sets the AUTH-method to use when connecting to the SMTP-server
  * @param method    method to use
@@ -587,6 +601,7 @@ void Mailer::setAUTHMethod(Mailer::SMTP_Auth_Method method)
 {
     authMethodToUse = method;
 }
+
 
 /**
  * Sets the password to use for AUTH on the SMTP-server
@@ -597,6 +612,7 @@ void Mailer::setPassword(const QString &value)
     password = value;
 }
 
+
 /**
  * Sets the username to use for AUTH on the SMTP-server
  * @param value username in plaintext
@@ -606,6 +622,7 @@ void Mailer::setUsername(const QString &value)
     username = value;
 }
 
+
 /**
  * Sets the kind of socket-encryption to use
  * @param value encryption to use
@@ -614,6 +631,7 @@ void Mailer::setEncryptionUsed(const ENCRYPTION &value)
 {
     encryptionUsed = value;
 }
+
 
 /**
  * In mailclients you often want to set a readable name for a recepient additional
@@ -641,6 +659,7 @@ QString Mailer::pureMailaddressFromAddressstring(const QString &addressstring)
     return returnValue;
 }
 
+
 /**
  * Tests if a string contains a valid plain mailaddress as in "local@domain.tld".
  * @param address   the address to test.
@@ -650,6 +669,7 @@ inline bool Mailer::validPureMailaddress(const QString &address)
 {
     return address.contains(QRegExp(R"(^[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}$)"));
 }
+
 
 /**
  * Tests if a string contains a valid plain mailaddress as in "My Name <local@domain.tld>".
@@ -662,6 +682,7 @@ inline bool Mailer::validDecoratedAddress(const QString &address)
                                 R"(^.*<[A-Za-z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]{2,4}>\s*$)"
                                 ));
 }
+
 
 /**
  * Ignore self signed certificates

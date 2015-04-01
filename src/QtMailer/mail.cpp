@@ -150,6 +150,7 @@ QString Mail::getSender() const
     return sender;
 }
 
+
 /**
  * Returns a QStringList holding all the mailadresses from to, cc and bcc
  * @return all recepients mailaddresses
@@ -161,6 +162,7 @@ QStringList Mail::getAllRecepients() const
     return result;
 }
 
+
 /**
  * All addresses from the To:-header
  * @return recepients
@@ -169,6 +171,7 @@ QStringList Mail::getToRecepients() const
 {
     return toRecepients;
 }
+
 
 /**
  * All addresses from the Cc:-header
@@ -179,6 +182,7 @@ QStringList Mail::getCcRecepients() const
     return ccRecepients;
 }
 
+
 /**
  * All addresses from the Bcc:-header
  * @return recepients
@@ -187,6 +191,7 @@ QStringList Mail::getBccRecepients() const
 {
     return bccRecepients;
 }
+
 
 /**
  * Generates a string repesentation in base64 of a file.
@@ -210,6 +215,7 @@ QString Mail::generateBase64FromFile(const QFileInfo& fileinfo) const
     file.close();
     return attachedFileInBase64;
 }
+
 
 /**
  * Takes a string and folds is according rfc5322
@@ -236,6 +242,7 @@ QString Mail::foldString(const QString &original) const
     return foldedString;
 }
 
+
 /**
  * MimeType for a file
  * @param fileinfo pointing to the file
@@ -247,6 +254,7 @@ QString Mail::mimetypeForFile(const QFileInfo &fileinfo) const
     QMimeDatabase mimedatabase;
     return mimedatabase.mimeTypeForFile(fileinfo).name();
 }
+
 
 /**
  * Takes a QStringList with mailaddresses and generates a folded header line out of them

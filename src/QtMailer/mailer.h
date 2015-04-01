@@ -24,6 +24,7 @@ class Mailer : public QObject
 {
     Q_OBJECT
 
+    /// Defines the different states of the SMTP connection
     enum SMTP_States {
         Disconnected,
         Connected,
@@ -37,8 +38,7 @@ class Mailer : public QObject
         AUTH
     };
 
-
-
+    /// Defines the different states of the SMTP-login
     enum SMTP_Login_State {
         PRELOGIN,
         AUTHLOGINsent,
@@ -46,23 +46,26 @@ class Mailer : public QObject
         PASSWORDsent
     };
 
+    /// Defines if the STARTTLS is already send to the server (when using STARTTLS)
     enum STARTTLSstate{
        preSTARTTLS,
        postSTARTTLS
     };
 
-
 public:
+    /// Defines if the commnuication with the server should be encrypted or not
     enum ENCRYPTION{
         UNENCRYPTED,
         STARTTLS,
         SSL
     };
 
+    /// Defines if the server needs authentication
     enum SMTP_Auth_Method {
         LOGIN,
         NO_Auth
     };
+
     explicit Mailer(const QString &server, QObject *parent = 0);
 
     int                     sizeOfQueue() const;
@@ -109,8 +112,6 @@ protected:
     bool                connectToServer();
     void                disconnectFromServer();
     void                sendAUTHLOGIN();
-    void                sendAUTHLOGINuser();
-    void                sendAUTHLOGINpassword();
     void                sendSTARTTLS();
     void                sendEHLO();
     void                sendMAILFROM();
@@ -137,7 +138,6 @@ protected slots:
     void    dataReadyForReading();
     void    errorReceived(QAbstractSocket::SocketError);
     void    sslErrorsReceived(QList<QSslError>);
-
 
 public slots:
 
