@@ -10,12 +10,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         dialog.cpp \
-    ../../src/QtMailer/mailer.cpp \
-    ../../src/QtMailer/mail.cpp \
-    ../../src/QtMailerStatus/mailerstatus.cpp
 
 HEADERS  += dialog.h \
-    ../../src/QtMailer/mailer.h \
-    ../../src/QtMailer/mail.h \
-    ../../src/QtMailerStatus/mailerstatus.h \
-    ../../src/QtMailerStatus/mailerstatusStrings.h
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/release/ -lQtMailer
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/debug/ -lQtMailer
+else:unix: LIBS += -L$$PWD/../../lib/ -lQtMailer
+
+INCLUDEPATH += $$PWD/../../src
+DEPENDPATH += $$PWD/../../src
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../lib/release/libQtMailer.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../lib/debug/libQtMailer.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../lib/release/QtMailer.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../lib/debug/QtMailer.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../lib/libQtMailer.a

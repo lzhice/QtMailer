@@ -1,8 +1,8 @@
 #include "dialog.h"
-#include "../../src/QtMailer/mail.h"
-#include "../../src/QtMailer/mailer.h"
-#include "QList"
-#include "QFileInfo"
+#include "mail.h"
+#include "mailer.h"
+#include <QList>
+#include <QFileInfo>
 #include <QEventLoop>
 #include <QApplication>
 

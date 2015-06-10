@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "../../src/QtMailerStatus/mailerstatus.h"
+#include "mailerstatus.h"
 
 class Dialog : public QDialog
 {
