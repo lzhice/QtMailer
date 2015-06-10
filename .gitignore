@@ -1,10 +1,10 @@
 testing
-examples/*
-!examples/guiproject
 *.user
 .DS_Store
 lib
 Makefile
+Makefile.*
 moc_*.cpp
 *.o
 .*
+*.app
