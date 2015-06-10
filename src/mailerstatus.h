@@ -9,7 +9,7 @@
 #include <QButtonGroup>
 #include <QCloseEvent>
 
-#include "../QtMailer/mailer.h"
+#include "mailer.h"
 #include "mailerstatusStrings.h"
 
 class MailerStatus : public QDialog

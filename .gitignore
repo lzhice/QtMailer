@@ -1,5 +1,10 @@
 testing
 examples/*
 !examples/guiproject
-examples/guiproject/*.user
+*.user
 .DS_Store
+lib
+Makefile
+moc_*.cpp
+*.o
+.*
