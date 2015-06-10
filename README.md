@@ -35,16 +35,16 @@ in */usr/lib* and */usr/include* by default.  You can change the PREFIX
 (/usr) by using the PREFIX-Variable in qmake.
 
 ### Unix & Linux
-% cd src
-% qmake
-% make
-% make install
+    % cd src
+    % qmake
+    % make
+    % make install
 
 ### FreeBSD
 To install the files in /usr/local you have to add the alternative
 prefix to qmake:
 
-% cd src
-% qmake PREFIX=/usr/local
-% make
-% make install
+    % cd src
+    % qmake PREFIX=/usr/local
+    % make
+    % make install
