@@ -34,6 +34,9 @@ header-files into your system. The library and headers will be installed
 in */usr/lib* and */usr/include* by default.  You can change the PREFIX
 (/usr) by using the PREFIX-Variable in qmake.
 
+If you want to build the whole project (incl. examples) using Qt-Creator
+don't use shadow-build cause it breaks the paths used in the projectfiles.
+
 ### Unix & Linux
     % cd src
     % qmake
